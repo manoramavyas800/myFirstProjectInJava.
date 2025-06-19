@@ -82,3 +82,66 @@ public interface DeleteFileDemo {
     }
 }
 
+//TASK 3RD.
+/*JAVA MULTITHREADING BANK ATM EXAMPLE. */
+//ACCOUNT CLASS
+package p2;
+
+public class Account {
+    private int balance=6000;
+    public int getBalance() {
+        return balance;
+    }
+    public void withdraw(int amount) {
+        balance -= amount;
+    }
+}
+//CLASS ACCOUNTHOLDER
+
+package com.infotech.worker;
+
+import p2.Account;
+
+public class AccountHolder  implements Runnable {
+    private Account account;
+
+    public AccountHolder(Account account) {
+        this.account = account;
+    }
+
+    public void run() {
+        for (int i = 0; i <= 4; i++) {
+            makeWithdrawal(2000);
+            if (account.getBalance() < 0) {
+                System.out.println("account is overdrawn!");
+            }
+        }
+    }
+    private  void makeWithdrawal(int withdrawAmount) {
+        if (account.getBalance() >= withdrawAmount) {
+            System.out.println(Thread.currentThread().getName() + "  is going to withdrawn!!!" + withdrawAmount);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+            }
+                account.withdraw(withdrawAmount);
+                System.out.println(Thread.currentThread().getName() + " completes the withdrawn of $!!!" + withdrawAmount + account.getBalance());
+            }
+        }
+    }
+    //MAIN CLASS
+    package com.infotech.client;
+
+import com.infotech.worker.AccountHolder;
+import p2.Account;
+
+public class ClientTest {
+    public static void main(String[] args) {
+        Account account = new Account();
+        AccountHolder accountHolder = new AccountHolder(account);
+        Thread t1 = new Thread(accountHolder);
+        Thread t2 = new Thread(accountHolder);
+        t1.start();
+        t2.start();
+    }
+}
