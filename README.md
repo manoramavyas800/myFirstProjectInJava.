@@ -84,7 +84,7 @@ public interface DeleteFileDemo {
 
 //TASK 3RD.
 /*JAVA MULTITHREADING BANK ATM EXAMPLE. */
-//ACCOUNT CLASS
+// EXAMPLE 1. ACCOUNT CLASS
 package p2;
 
 public class Account {
@@ -145,3 +145,50 @@ public class ClientTest {
         t2.start();
     }
 }
+//EXAMPLE 2. BUS RESERVATION SYSTEM.
+
+package bus.resevation.client;
+import bus.reservation.system.TicketBookingThread;
+import bus.reservation.system.TicketCounter;
+
+public class Test {
+    public static void main(String[] args) {
+        TicketCounter ticketCounter=new TicketCounter();
+        TicketBookingThread t1=new TicketBookingThread(ticketCounter,"John",2);
+        TicketBookingThread t2=new TicketBookingThread(ticketCounter,"Martin",4);
+        t1.start();
+        t2.start();
+
+    }
+}
+//COUNTER CLASS
+package bus.reservation.system;
+
+public class TicketCounter {
+    private int availableSeats=2;
+    public void bookTicket(String pname,int numOFSeats){
+        if((availableSeats>=numOFSeats)&&(numOFSeats>0)){
+                System.out.println("Hi  "+pname+" :"+numOFSeats+" seats booked successfully...");
+                availableSeats=availableSeats-numOFSeats;
+        }else{
+            System.out.println("Hi  "+pname+" :"+numOFSeats+" seats not booked...");
+        }
+    }
+}
+//TICKET BOOKING THREAD.
+
+package bus.reservation.system;
+
+public class TicketBookingThread extends Thread {
+    private final TicketCounter ticketCounter;
+    private final String passengerName;
+    private final int noOfSeatsToBook;
+    public  TicketBookingThread(TicketCounter ticketCounter, String passengerName, int noOfSeatsToBook) {
+        this.ticketCounter = ticketCounter;
+        this.passengerName = passengerName;
+        this.noOfSeatsToBook = noOfSeatsToBook;
+    }
+    public void run() {
+        ticketCounter.bookTicket(passengerName, noOfSeatsToBook);
+    }
+    }
