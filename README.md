@@ -192,3 +192,93 @@ public class TicketBookingThread extends Thread {
         ticketCounter.bookTicket(passengerName, noOfSeatsToBook);
     }
     }
+    //TASK 4 AI RECOMMENDER  SYSTEM.
+    //BOOK AND MAIN CLASS
+    
+    package bookrecommender.model;
+
+public class Book {
+    private final String title;
+    private final String author;
+    private final String genre;
+    public Book(String title, String author, String genre) {
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+    }
+    public String getTitle() {
+        return title;
+    }
+
+    public String getGenre() {
+        return genre;
+}
+    public String getAuthor() {
+        return author;
+    }
+    public void display() {
+        System.out.println("Title: " + title);
+        System.out.println("Author: " + author);
+        System.out.println("Genre: " + genre);
+        System.out.println("----------------");
+    }
+}
+//SERVICE CLASS
+
+package bookrecommender.service;
+
+import bookrecommender.model.Book;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BookService {
+    private final List<Book> books;
+    public BookService() {
+        books = new ArrayList<Book>();
+        books.add(new Book( "The Alchemist", "VyasManorama", "Friction"));
+        books.add(new Book( "The Dark Knight", "Manorama", "Dystopain"));
+        books.add(new Book("The Great Gatsby", "Mahi", "Atomic"));
+        books.add(new Book("Education", "Tara Westover", "Memoir"));
+
+    }
+    public List<Book> getRecommendations(String genre) {
+        List<Book>recommendations = new ArrayList<>();
+        for (Book book : books) {
+            if(book.getGenre().equalsIgnoreCase(genre)){
+                recommendations.add(book);
+            }
+        }
+        return recommendations;
+
+    }
+}
+//BOOK APP
+
+package bookrecommender.main;
+
+import bookrecommender.model.Book;
+import bookrecommender.service.BookService;
+
+import java.util.List;
+import java.util.Scanner;
+
+public class BookRecommendationApp {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        BookService bookService = new BookService();
+        System.out.println("Welcome to the Book Recommendation App! ");
+        System.out.println("Please enter the name of the book you would like to recommend: ");
+        String genre = sc.nextLine();
+        List<Book> recommendedBooks= bookService.getRecommendations(genre);
+        if(recommendedBooks.isEmpty()){
+            System.out.println("No recommended books found!");
+        }else{
+            System.out.println("Recommended Books: ");
+            for(Book book : recommendedBooks){
+                book.display();
+            }
+        }
+        sc.close();
+    }
+}
